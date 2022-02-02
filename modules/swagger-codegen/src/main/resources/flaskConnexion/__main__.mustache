@@ -9,13 +9,44 @@ import connexion
 
 from {{packageName}} import encoder
 
+import gc
+import logging
+
+from {{packageName}} import global_settings
+from flask_swagger_ui import get_swaggerui_blueprint
 
 def main():
+    # https://stackoverflow.com/questions/10973362/python-logging-function-name-file-name-line-number-using-a-single-file
+    FORMAT = "[%(filename)s:%(lineno)s - %(funcName)20s() ] %(message)s"
+    logging.basicConfig(format=FORMAT)
+    # logging.basicConfig(level=logging.WARNING)
+
     app = connexion.App(__name__, specification_dir='./swagger/')
     app.app.json_encoder = encoder.JSONEncoder
     app.add_api('swagger.yaml', arguments={'title': '{{appName}}'})
+
+### swagger specific ###
+    SWAGGER_URL = '/swagger'
+    API_URL = '/swagger.json'
+    SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
+        SWAGGER_URL,
+        API_URL,
+        config={
+            'app_name': "{{appName}}"
+        }
+    )
+    app.app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
+
     app.run(port={{serverPort}})
 
+    for sKey in list(global_settings.ctx.keys()):
+        del global_settings.ctx[sKey]
+    global_settings.ctx = None
+    
+    gc.collect()
+
+    global_settings.oVBoxMgr.deinit()
+    del global_settings.oVBoxMgr
 
 if __name__ == '__main__':
     main()
