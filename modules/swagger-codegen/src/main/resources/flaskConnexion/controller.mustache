@@ -4,7 +4,7 @@ import six
 {{#imports}}{{import}}  # noqa: E501
 {{/imports}}
 from {{packageName}} import util
-from {{packageName}}.internal.controllers.i_{{classFilename}} import *
+from {{packageName}}.controllers.internals.i_{{classFilename}} import *
 {{#operations}}
 {{#operation}}
 
