@@ -4,7 +4,7 @@ import six
 {{#imports}}{{import}}  # noqa: E501
 {{/imports}}
 from {{packageName}} import util
-from {{packageName}}.internal.controllers.i_{{classFilename}} import *
+from {{packageName}}.controllers.internal.i_{{classFilename}} import *
 {{#operations}}
 {{#operation}}
 
@@ -107,7 +107,6 @@ def {{operationId}}({{#allParams}}{{paramName}}{{^required}}=None{{/required}}{{
             {{/items}}
         {{/isMapContainer}}
     {{/allParams}}
-
     return i_{{operationId}}({{#allParams}}{{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}})
 {{/operation}}
 {{/operations}}

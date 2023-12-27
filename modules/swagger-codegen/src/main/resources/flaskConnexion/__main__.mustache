@@ -9,6 +9,7 @@ import connexion
 
 from {{packageName}} import encoder
 
+
 import gc
 import logging
 
@@ -25,14 +26,14 @@ def create_app():
     # if the next line is commented out then the error like "TypeError: Object of type Machine is not JSON serializable"
     # may occur during any HTTP request (the response is 500)
     app.app.json_encoder = encoder.JSONEncoder
-    app.add_api('virtualbox.yml', arguments={'title': 'VirtualBox REST API'})
+    app.add_api('virtualbox.yaml', arguments={'title': 'VirtualBox REST API'})
 
     # add CORS support
     CORS(app.app)
 
     ### setup API url for Swagger UI ###
     SWAGGER_URL = '/virtualbox/0.0.1/api'
-    API_URL = '/static/virtualbox.yml'
+    API_URL = '/static/virtualbox.yaml'
     SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
         SWAGGER_URL,
         API_URL,
